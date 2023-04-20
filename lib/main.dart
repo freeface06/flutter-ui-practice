@@ -51,10 +51,49 @@ class _MyHomePageState extends State<MyHomePage> {
     PersonPage()
   ];
 
+  void _onButtonPressed() {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text('AppBar 버튼 클릭!'),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
+    final ColorScheme colors = Theme.of(context).colorScheme;
+
     return Scaffold(
-      appBar: null,
+      appBar: AppBar(
+        title: const Text('HJ'),
+        backgroundColor: Colors.deepOrange,
+        actions: <Widget>[
+          IconButton(
+            icon: const Icon(Icons.filter_drama),
+            onPressed: _onButtonPressed,
+            style: IconButton.styleFrom(
+              foregroundColor: colors.onPrimary,
+              backgroundColor: colors.primary,
+              disabledBackgroundColor: colors.onSurface.withOpacity(0.12),
+              hoverColor: colors.onPrimary.withOpacity(0.08),
+              focusColor: colors.onPrimary.withOpacity(0.12),
+              highlightColor: colors.onPrimary.withOpacity(0.12),
+            ),
+          ),
+          IconButton(
+            icon: const Icon(Icons.account_circle_rounded),
+            onPressed: _onButtonPressed,
+            style: IconButton.styleFrom(
+              foregroundColor: colors.onPrimary,
+              backgroundColor: colors.primary,
+              disabledBackgroundColor: colors.onSurface.withOpacity(0.12),
+              hoverColor: colors.onPrimary.withOpacity(0.08),
+              focusColor: colors.onPrimary.withOpacity(0.12),
+              highlightColor: colors.onPrimary.withOpacity(0.12),
+            ),
+          ),
+        ],
+      ),
       body: Center(
         // 앱의 메인 화면
         child: _widgetOptions.elementAt(_selectedIndex),
