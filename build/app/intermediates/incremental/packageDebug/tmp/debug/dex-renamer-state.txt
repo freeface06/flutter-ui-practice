@@ -1,4 +1,4 @@
-#Thu Apr 20 16:43:48 KST 2023
+#Thu Apr 20 19:54:59 KST 2023
 base.0=C\:\\Users\\freef\\AndroidStudioProjects\\practice\\build\\app\\intermediates\\dex\\debug\\mergeDexDebug\\classes.dex
 path.0=classes.dex
 renamed.0=classes.dex
