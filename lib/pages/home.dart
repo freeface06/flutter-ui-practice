@@ -1,34 +1,15 @@
 import 'dart:convert';
 import 'package:flutter/cupertino.dart';
-import 'package:pull_to_refresh/pull_to_refresh.dart'; // 참고 : https://pub.dev/packages/pull_to_refresh
-
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:practice/config/config.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart'; // 참고 : https://pub.dev/packages/pull_to_refresh
+
+// vo
+import 'package:practice/vo/postVo.dart';
 
 void main() {
   runApp(const HomePage());
-}
-
-class Post {
-  final int userId;
-  final int id;
-  final String title;
-  final String body;
-
-  Post(
-      {required this.userId,
-      required this.id,
-      required this.title,
-      required this.body});
-
-  factory Post.fromJson(Map<String, dynamic> json) {
-    return Post(
-      userId: json['userId'] as int,
-      id: json['id'] as int,
-      title: json['title'] as String,
-      body: json['body'] as String,
-    );
-  }
 }
 
 class HomePage extends StatefulWidget {
@@ -41,10 +22,10 @@ class HomePage extends StatefulWidget {
 class _MyAppState extends State<HomePage> {
   List<Post> _postList = [];
 
-  late int _postSize;
+  int _postSize = 0;
 
-  final int _addCount = 10;
-  int _listCount = 10;
+  final int _addCount = Config().viewCount;
+  int _listCount = Config().viewCount;
 
   @override
   void initState() {
@@ -71,7 +52,8 @@ class _MyAppState extends State<HomePage> {
 
   //새로고침
   void _onRefresh() async {
-    await Future.delayed(const Duration(milliseconds: 1000)); //1초를 기다린 후 새로고침한다.
+    await Future.delayed(
+        const Duration(milliseconds: 1000)); //1초를 기다린 후 새로고침한다.
     setState(() {
       _listCount = _addCount;
     });
@@ -81,7 +63,8 @@ class _MyAppState extends State<HomePage> {
 
   //무한 스크롤
   void _onLoading() async {
-    await Future.delayed(const Duration(milliseconds: 1000)); //1초를 기다린 후 새로운 데이터를 불러온다.
+    await Future.delayed(
+        const Duration(milliseconds: 1000)); //1초를 기다린 후 새로운 데이터를 불러온다.
     setState(() {
       if (_listCount >= _postSize) {
         _listCount = _postSize;
