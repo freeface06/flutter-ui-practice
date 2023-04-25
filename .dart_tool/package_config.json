@@ -116,6 +116,12 @@
       "languageVersion": "2.12"
     },
     {
+      "name": "pull_to_refresh",
+      "rootUri": "file:///C:/Users/freef/AppData/Local/Pub/Cache/hosted/pub.dev/pull_to_refresh-2.0.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
       "name": "simple_gesture_detector",
       "rootUri": "file:///C:/Users/freef/AppData/Local/Pub/Cache/hosted/pub.dev/simple_gesture_detector-0.2.0",
       "packageUri": "lib/",
@@ -188,7 +194,7 @@
       "languageVersion": "2.19"
     }
   ],
-  "generated": "2023-04-20T10:47:17.861856Z",
+  "generated": "2023-04-25T04:55:55.837933Z",
   "generator": "pub",
   "generatorVersion": "2.19.6"
 }
