@@ -1,5 +1,6 @@
 # dependencies:
 ```
+dependencies:
   ...
   cupertino_icons: ^1.0.2
   http: ^0.13.4
