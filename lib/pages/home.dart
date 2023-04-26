@@ -142,14 +142,39 @@ class _MyAppState extends State<HomePage> {
                   itemBuilder: (context, index) {
                     final Post post = _postList[index];
                     return ListTile(
+                      onTap: () {
+                        showDialog(
+                            context: context,
+                            builder: (context) {
+                              return AlertDialog(
+                                title: Row(
+                                  children: const [
+                                    Icon(Icons.mail),
+                                    Text("Mail")
+                                  ],
+                                ),
+                                content: Column(
+                                  children: [
+                                    Text(
+                                      _postList[index].title,
+                                      style: const TextStyle(
+                                          fontWeight: FontWeight.bold),
+                                      overflow: TextOverflow.clip,
+                                    ),
+                                    const Divider(),
+                                    Text(_postList[index].body),
+                                  ],
+                                ),
+                              );
+                            });
+                      },
                       leading: const Icon(Icons.local_post_office),
                       title: Text(post.title),
                       subtitle: Text(post.body),
                       trailing: const Icon(Icons.arrow_right),
                     );
                   },
-                  separatorBuilder: (BuildContext context, int index) =>
-                      const Divider(),
+                  separatorBuilder: (BuildContext context, int index) => const Divider(),
                 )),
     );
   }
