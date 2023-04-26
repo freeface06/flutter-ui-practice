@@ -32,8 +32,8 @@ dependencies:
 
 # Day 4.
 - ListView 탭시 showDialog 팝업창으로 상세내용 표시.
-
-* TableCalendar Widget Locale 설정
+- TableCalendar Event 추가
+- TableCalendar Widget Locale 설정
 1) dependencies에 intl패키지 추가
 ```
 dependencies:
