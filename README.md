@@ -62,3 +62,6 @@ TableCalendar<Event>(
   locale: 'ko_KR',
 ...
 ```
+
+# Day 5.
+- Calendar 탭의 달력에 일정관리 기능 추가
