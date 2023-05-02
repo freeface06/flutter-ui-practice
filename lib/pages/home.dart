@@ -133,7 +133,7 @@ class _MyAppState extends State<HomePage> {
           // 새로고침을 구현한 함수
           onLoading: _onLoading,
           // 무한스크롤을 구현한 함수
-          child: _postList.length == 0
+          child: _postList.isEmpty
               ? const Center(
                   child: CircularProgressIndicator(),
                 )

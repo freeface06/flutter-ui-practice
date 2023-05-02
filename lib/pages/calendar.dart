@@ -1,6 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:practice/utils.dart';
+import 'package:practice/vo/eventVo.dart';
 import 'package:table_calendar/table_calendar.dart';
+
+final kToday = DateTime.now();
+final kFirstDay = DateTime(kToday.year, kToday.month - 3, kToday.day);
+final kLastDay = DateTime(kToday.year, kToday.month + 3, kToday.day);
+
+Map<DateTime, List<Event>> kEvents = {};
 
 void main() async {
   runApp(const MaterialApp(
@@ -18,18 +24,19 @@ class CalendarPage extends StatefulWidget {
 class _MyAppState extends State<CalendarPage> {
   late final ValueNotifier<List<Event>> _selectedEvents;
   CalendarFormat _calendarFormat = CalendarFormat.month;
-  RangeSelectionMode _rangeSelectionMode =
-      RangeSelectionMode.toggledOff; // 날짜를 길게 눌러 다중날짜 선택 토글 온, 오프
+  RangeSelectionMode _rangeSelectionMode = RangeSelectionMode.toggledOff;
   DateTime _focusedDay = DateTime.now();
   DateTime? _selectedDay;
-  DateTime? _rangeStart;
-  DateTime? _rangeEnd;
 
   @override
   void initState() {
+    // 최초 한번 실행하는 매서드
     super.initState();
 
     _selectedDay = _focusedDay;
+
+    kEvents.clear();
+    _getItems();
     _selectedEvents = ValueNotifier(_getEventsForDay(_selectedDay!));
   }
 
@@ -40,15 +47,22 @@ class _MyAppState extends State<CalendarPage> {
   }
 
   List<Event> _getEventsForDay(DateTime day) {
-    return kEvents[day] ?? [];
+    return kEvents[DateTime.parse(day.toString().split(" ")[0])] ?? [];
   }
 
-  List<Event> _getEventsForRange(DateTime start, DateTime end) {
-    final days = daysInRange(start, end);
+  void _getItems() async {
+    setState(() {
+      DateTime eventDate = DateTime.parse("2023-05-04");
+      Event newEvent = Event("오후2시 구비트 오진수 부장님 방문미팅"); // 추가할 이벤트 객체
 
-    return [
-      for (final d in days) ..._getEventsForDay(d),
-    ];
+      if (kEvents[eventDate] == null) {
+        // 해당 날짜에 이벤트가 없는 경우
+        kEvents[eventDate] = [newEvent]; // 새로운 이벤트를 리스트에 담아서 추가
+      } else {
+        // 해당 날짜에 이벤트가 있는 경우
+        kEvents[eventDate]!.add(newEvent); // 해당 날짜의 리스트에 이벤트를 추가
+      }
+    });
   }
 
   void _onDaySelected(DateTime selectedDay, DateTime focusedDay) {
@@ -56,31 +70,10 @@ class _MyAppState extends State<CalendarPage> {
       setState(() {
         _selectedDay = selectedDay;
         _focusedDay = focusedDay;
-        _rangeStart = null;
-        _rangeEnd = null;
         _rangeSelectionMode = RangeSelectionMode.toggledOff;
       });
 
       _selectedEvents.value = _getEventsForDay(selectedDay);
-    }
-  }
-
-  void _onRangeSelected(DateTime? start, DateTime? end, DateTime focusedDay) {
-    setState(() {
-      _selectedDay = null;
-      _focusedDay = focusedDay;
-      _rangeStart = start;
-      _rangeEnd = end;
-      _rangeSelectionMode = RangeSelectionMode.toggledOn;
-    });
-
-    // 'start' 또는 'end'는 null일 수 있습니다
-    if (start != null && end != null) {
-      _selectedEvents.value = _getEventsForRange(start, end);
-    } else if (start != null) {
-      _selectedEvents.value = _getEventsForDay(start);
-    } else if (end != null) {
-      _selectedEvents.value = _getEventsForDay(end);
     }
   }
 
@@ -91,25 +84,16 @@ class _MyAppState extends State<CalendarPage> {
       body: Column(
         children: [
           TableCalendar<Event>(
-            locale: 'ko_KR',
+            locale: "ko_KR",
             firstDay: kFirstDay,
             lastDay: kLastDay,
             focusedDay: _focusedDay,
             selectedDayPredicate: (day) => isSameDay(_selectedDay, day),
-            rangeStartDay: _rangeStart,
-            rangeEndDay: _rangeEnd,
-            calendarFormat: _calendarFormat,
-            rangeSelectionMode: _rangeSelectionMode,
             eventLoader: _getEventsForDay,
-            startingDayOfWeek: StartingDayOfWeek.monday,
             calendarStyle: const CalendarStyle(
-              // UI를 사용자 정의하려면 CalendarStyle을 사용하세요
-              outsideDaysVisible: true,
-              weekendTextStyle: TextStyle(color: Colors.red),
-              holidayTextStyle: TextStyle(color: Colors.blue),
+              outsideDaysVisible: false,
             ),
             onDaySelected: _onDaySelected,
-            onRangeSelected: _onRangeSelected,
             onFormatChanged: (format) {
               if (_calendarFormat != format) {
                 setState(() {
@@ -120,6 +104,10 @@ class _MyAppState extends State<CalendarPage> {
             onPageChanged: (focusedDay) {
               _focusedDay = focusedDay;
             },
+            headerStyle: const HeaderStyle(
+              titleCentered: true,
+              formatButtonVisible: false,
+            ),
           ),
           const SizedBox(height: 8.0),
           Expanded(
